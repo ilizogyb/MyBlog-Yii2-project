@@ -1,0 +1,25 @@
+#Block access to .htaccess file
+RewriteRule .htaccess - [F]
+
+#Enable Errors reporting
+php_value display_errors 1
+
+#Create links
+Options +FollowSymLinks
+
+#Hide all files in all directory
+Options -Indexes
+
+#Enable mode_rewrite module
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    
+    #if request isn't start from web, add web to his
+    RewriteCond %{REQUEST_URI} !^/(web)
+    RewriteRule (.*) basic/web/$1
+
+    #file or directory is not processed by regular expression 
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /basic/web/index.php
+</IfModule>
